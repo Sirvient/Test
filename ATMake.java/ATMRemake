@@ -1,0 +1,236 @@
+import java.util.Scanner;
+
+public class ATMRemake {
+
+    static Scanner input = new Scanner(System.in);
+    static int correctPin = 123;
+    static int userPin;
+    static int attempts = 0;
+    static int transactionMenu;
+    static char transactionChoice;
+    static int balance = 50000;
+    static int amount;
+        static char checkbalancecharge;
+            static char withdrawCashCharge;
+                
+                    public static void main(String[] args) {
+
+        do {
+            inputPin();
+            if (userPin == correctPin){
+                do {
+                    transactionMenu();
+                    switch (transactionMenu) {
+                        case 1:
+                            checkBalance();
+                            anotherTransaction();
+                            break;
+                        case 2:
+                            withdrawCashCharge();
+                            anotherTransaction();
+                            break;
+                        case 3:
+                            endOfTransaction();
+                        default:
+                            System.out.println("Invalid choice.");
+                    }
+                } while (transactionChoice == 'Y' || transactionChoice == 'y');
+            } else if (attempts < 3){
+                attemptsRemaining();
+            } else {
+                System.out.println("Invalid.");
+            }
+        } while (attempts < 3);
+
+    }
+
+//    Nested Method
+
+
+//    Methods
+    public static void transactionMenu(){
+        do {
+                    System.out.println("What Transaction would you like to make?");
+        System.out.println("1. Check Balance");
+        System.out.println("2. Withdraw Cash");
+        System.out.println("3. Exit");
+
+        System.out.print("Please choose transaction: ");
+            if (!input.hasNextInt()) {
+                                System.out.println("Please Enter a Number.");
+                                                input.next();
+                                                                transactionMenu = 0;
+                                                                                continue;
+            }
+                            
+                                            transactionMenu = input.nextInt();
+                                                            
+                                                                            if (transactionMenu != 1 && transactionMenu != 2 && transactionMenu != 3) {
+                                                                                                System.out.println("Please choose only 1, 2, or 3.");
+                                                                            }
+        } while (transactionMenu != 1 && transactionMenu != 2 && transactionMenu != 3);
+                
+    }
+    public static void attemptsRemaining(){
+        attempts++;
+        if (attempts < 3) {
+            System.out.println("Incorrect PIN");
+            System.out.println("Remaining attempts before card is locked: " + (3 - attempts));
+            System.out.println("Please reenter PIN.");
+        } else {
+            System.out.println("Card locked.");
+            System.out.println("Please contact your bank to retrieve your Card.");
+            return;
+        }
+    }
+    public static void inputPin(){
+        System.out.print("Enter PIN: ");
+                if (input.hasNextInt()) {
+                                userPin = input.nextInt();
+                } else {
+                                input.next();
+                }
+                       
+    }
+
+    public static void anotherTransaction() {
+        System.out.print("Would you like to make another transaction? (Y/N): ");
+        transactionChoice = input.next().charAt(0);
+
+        if (transactionChoice == 'Y' || transactionChoice == 'y') {
+            System.out.println("loading...");
+                    } else if (transactionChoice == 'N' || transactionChoice == 'n') {
+            endOfTransaction();
+        } else {
+            do {
+                System.out.print("Invalid entry. Please enter Y or N only: ");
+                transactionChoice = input.next().charAt(0);
+            } while (transactionChoice != 'Y' && transactionChoice != 'y' && transactionChoice != 'N' && transactionChoice != 'n');
+        }
+    }
+
+    public static void checkBalance(){
+        System.out.print("Check balance has a fee of 2.00 Php. Do you want to proceed? Y/N):");
+        checkbalancecharge = input.next().charAt(0);
+        
+                if ( checkbalancecharge =='Y'|| checkbalancecharge == 'y'){
+            if (balance > 2) {
+                balance = balance - 2;
+                System.out.println           ("Your balance is " + balance);
+            } else{
+                System.out.println("Insufficient Amount");
+            }
+        } else if (checkbalancecharge == 'N' || checkbalancecharge == 'n') {
+            System.out.println("Transaction cancelled.");
+
+        } else {
+            do {
+                System.out.print("Invalid input. Please type Y or N.");
+                System.out.print("Do you want to proceed? (Y/N): ");
+                checkbalancecharge = input.next().charAt(0);
+
+            } while (checkbalancecharge != 'Y' && checkbalancecharge != 'y' &&
+                    checkbalancecharge != 'N' && checkbalancecharge != 'n');
+
+            if (checkbalancecharge == 'Y' || checkbalancecharge == 'y') {
+                if (balance > 2) {
+                    balance -= 2;
+                    System.out.println("Your balance is " + balance);
+
+                } else {
+                    System.out.println("Insufficient amount.");
+                }
+            } else {
+                System.out.println("Transaction cancelled.");
+            }
+        }
+    }
+
+   
+       public static void withdrawCashCharge(){
+                System.out.print("Withdraw Cash has a charge of 18.00 Php. Do you want to proceed? Y/N):");
+        withdrawCashCharge = input.next().charAt(0);
+                
+                        if ( withdrawCashCharge =='Y'|| withdrawCashCharge == 'y'){
+                                        if (balance > 18) {
+                balance = balance - 18;
+                                withdrawCash();
+                                            } else{
+                System.out.println("Insufficient Amount");
+            }
+                        } else if (withdrawCashCharge == 'N' || withdrawCashCharge == 'n') {
+            System.out.println("Transaction cancelled.");
+
+        } else {
+            do {
+                System.out.print("Invalid input. Please type Y or N.");
+                System.out.print("Do you want to proceed? (Y/N): ");
+                withdrawCashCharge = input.next().charAt(0);
+
+            } while (withdrawCashCharge != 'Y' && withdrawCashCharge != 'y' &&
+                    withdrawCashCharge != 'N' && withdrawCashCharge != 'n');
+
+            if (withdrawCashCharge == 'Y' || withdrawCashCharge == 'y') {
+                                if (balance > 18) {
+                    balance = balance - 18;
+                                        withdrawCash();
+                                                        } else{
+                    System.out.println("Insufficient Amount");
+                    }
+            } else {
+                                System.out.println("Transaction cancelled.");
+            }
+        }
+       }
+           
+               public static void withdrawCash(){
+        do {
+                                System.out.print("Please enter amount: ");
+                    if (!input.hasNextInt()) {
+                                            input.next();
+                                                                continue;
+                    } 
+                        
+                    amount = input.nextInt();
+                                
+                                            if (amount > balance) {
+                System.out.println("Insufficient Balance");
+
+            } else if (amount < 100) {
+                System.out.println("Minimum amount that can be withdrawn is 100 Php");
+
+            } else if (amount % 100 != 0) {
+                System.out.println("ATM can only dispense amounts by bills of 100s, 500s, and 1000s");
+
+            } else {
+                balance -= amount;
+
+                System.out.println("You have withdrawn " + amount + " Php");
+                System.out.println("Remaining balance: " + balance + " Php");
+                break;
+            }
+
+        } while (true);
+               }
+
+    public static void endOfTransaction(){
+        System.out.println("Thank you for using the ATM.");
+        System.out.println("Please retrieve your card.");
+        System.out.println("Card Removed");
+        
+                System.exit(0);
+                    }
+}
+
+
+                    }
+        }}
+            }
+            }}
+                        }
+       }
+                }
+                }}
+                                                                            }
+            }
+        }}}
